@@ -36,10 +36,12 @@ def check_processes(max_memory, whitelist, blacklist, sig, log_level, log_file):
     else:
         log_level = logging.ERROR
 
+    LOG_FORMAT='%(asctime)s %(message)s'
+
     if log_file:
-        logging.basicConfig(format='%(asctime)s %(message)s', level=log_level, filename=log_file)
+        logging.basicConfig(format=LOG_FORMAT, level=log_level, filename=log_file)
     else:
-        logging.basicConfig(format='%(asctime)s %(message)s', level=log_level)
+        logging.basicConfig(format=LOG_FORMAT, level=log_level)
 
     if whitelist:
         whitelist = whitelist.strip().split(',')
