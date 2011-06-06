@@ -1,0 +1,21 @@
+This app will scan through all running processes and send a kill signal if a
+process is using too much memory.
+
+usage: pymemmon.py [-h] [-w WHITELIST] [-b BLACKLIST] [-m MAX_MEMORY]
+                   [-s SIGNAL] [-l LOG_LEVEL] [-f LOG_FILE]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -w WHITELIST, --whitelist WHITELIST
+                        Comma separated list of processes to monitor
+  -b BLACKLIST, --blacklist BLACKLIST
+                        Comma separated list of processes to ignore
+  -m MAX_MEMORY, --max-memory MAX_MEMORY
+                        Max memory for a process in megabytes, default is
+                        100mb
+  -s SIGNAL, --signal SIGNAL
+                        The signal to send to the process, default is SIGUSR1
+  -l LOG_LEVEL, --log-level LOG_LEVEL
+                        The amount of logging you want: INFO, DEBUG, or ERROR
+  -f LOG_FILE, --log-file LOG_FILE
+                        File to log to
