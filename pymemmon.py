@@ -18,6 +18,8 @@ class Memmon(object):
         parser.add_argument('--smtp-port', help='The port the smtp server listens on')
         parser.add_argument('--smtp-user', help='The username to authenticate as')
         parser.add_argument('--smtp-password', help='The password to use for the smtp server')
+        parser.add_argument('--smtp-from', help='Who the e-mail is coming from')
+        parser.add_argument('--smtp-recipients', help='The people to be notified, comma separated list')
 
         args = parser.parse_args(sys.argv[1:])
 
@@ -28,6 +30,16 @@ class Memmon(object):
         self.should_send_mail = False
         if args.send_mail:
             self.should_send_mail = True
+
+            if not args.smtp_recipients:
+                raise Exception('You must define who you want the notifications to go to with --smtp-recipients')
+            else:
+                self.smtp_recipients = args.smtp_recipients.strip().split(',')
+
+            if not args.smtp_from:
+                raise Exception('You must define who the notifications should come from with --smtp-from')
+            else:
+                self.smtp_from = args.smtp_from.strip()
 
         if  args.max_memory:
             # convert arg to bytes
@@ -125,11 +137,9 @@ class Memmon(object):
             'memory': mem / (1024 * 1024),
         })
 
-        recipient = 'sontek@gmail.com'
-
         msg['Subject'] = 'Killed a process' 
-        msg['From'] = self.smtp_user
-        msg['To'] = recipient
+        msg['From'] = self.smtp_from
+        msg['To'] = ', '.join(self.smtp_recipients)
 
         mailServer = smtplib.SMTP(self.smtp_host, self.smtp_port)
         mailServer.ehlo()
@@ -139,7 +149,7 @@ class Memmon(object):
         if self.smtp_user and self.smtp_password:
             mailServer.login(self.smtp_user, self.smtp_password)
 
-        mailServer.sendmail(self.smtp_user, recipient, msg.as_string())
+        mailServer.sendmail(self.smtp_user, self.smtp_recipients, msg.as_string())
         mailServer.close()
 
 if __name__ == '__main__':
