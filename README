@@ -1,13 +1,17 @@
-This app will scan through all running processes and send a kill signal if a
-process is using too much memory.
+Example being notified through gmail:
+$ sudo python pymemmon.py -e --smtp-host smtp.gmail.com --smtp-port 587 --smtp-user sontek@gmail.com --smtp-password sekrit -w python,Python --smtp-recipients sontek@gmail.com,example@example.com --smtp-from sontek@gmail.com
 
 usage: pymemmon.py [-h] [-w WHITELIST] [-b BLACKLIST] [-m MAX_MEMORY]
-                   [-s SIGNAL] [-l LOG_LEVEL] [-f LOG_FILE]
+                   [-s SIGNAL] [-l LOG_LEVEL] [-f LOG_FILE] [-e]
+                   [--smtp-host SMTP_HOST] [--smtp-port SMTP_PORT]
+                   [--smtp-user SMTP_USER] [--smtp-password SMTP_PASSWORD]
+                   [--smtp-from SMTP_FROM] [--smtp-recipients SMTP_RECIPIENTS]
 
 optional arguments:
   -h, --help            show this help message and exit
   -w WHITELIST, --whitelist WHITELIST
-                        Comma separated list of processes to monitor
+                        Comma separated list of processes to monitor, will
+                        only monitor these if defined
   -b BLACKLIST, --blacklist BLACKLIST
                         Comma separated list of processes to ignore
   -m MAX_MEMORY, --max-memory MAX_MEMORY
@@ -19,3 +23,17 @@ optional arguments:
                         The amount of logging you want: INFO, DEBUG, or ERROR
   -f LOG_FILE, --log-file LOG_FILE
                         File to log to
+  -e, --send-mail       Will attempt to notify via e-mail if this is set
+  --smtp-host SMTP_HOST
+                        The smtp server address you want to send notifications
+                        through
+  --smtp-port SMTP_PORT
+                        The port the smtp server listens on
+  --smtp-user SMTP_USER
+                        The username to authenticate as
+  --smtp-password SMTP_PASSWORD
+                        The password to use for the smtp server
+  --smtp-from SMTP_FROM
+                        Who the e-mail is coming from
+  --smtp-recipients SMTP_RECIPIENTS
+                        The people to be notified, comma separated list
